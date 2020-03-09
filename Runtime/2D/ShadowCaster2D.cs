@@ -81,6 +81,11 @@ namespace UnityEngine.Experimental.Rendering.Universal
         {
             return m_ApplyToSortingLayers != null ? Array.IndexOf(m_ApplyToSortingLayers, layer) >= 0 : false;
         }
+        
+        private Vector3 vec2To3(Vector2 inputVector)
+        {
+            return new Vector3(inputVector.x, inputVector.y, 0);
+        }
 
         private void Awake()
         {
@@ -90,15 +95,27 @@ namespace UnityEngine.Experimental.Rendering.Universal
             Bounds bounds = new Bounds(transform.position, Vector3.one);
             
             Renderer renderer = GetComponent<Renderer>();
+            Collider2D collider = GetComponent<Collider2D>();
+
             if (renderer != null)
             {
                 bounds = renderer.bounds;
             }
             else
             {
-                Collider2D collider = GetComponent<Collider2D>();
                 if (collider != null)
                     bounds = collider.bounds;
+            }
+            
+            if(collider.GetType() == typeof(Tilemaps.TilemapCollider2D)){
+                gameObject.AddComponent(typeof(CompositeCollider2D));
+                CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
+                Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
+                compositeCollider.GetPath(0, pathVertices);
+                m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
+                m_UseRendererSilhouette = false;
+                DestroyImmediate(compositeCollider);
+                DestroyImmediate(GetComponent<Rigidbody2D>());
             }
 
             Vector3 relOffset = bounds.center - transform.position;
