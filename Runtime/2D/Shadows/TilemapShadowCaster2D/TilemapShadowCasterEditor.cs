@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 [CustomEditor(typeof(TilemapShadowCaster2D))]
 public class TilemapShadowCasterEditor : Editor
@@ -19,7 +20,7 @@ public class TilemapShadowCasterEditor : Editor
             tilemapShadowCaster.ClearShadowCasters();
             tilemapShadowCaster.FromGridTilesSprites();
         }
-        
+
         GUILayout.Space(20);
 
         if(GUILayout.Button("Clear Shadow Casters")){
