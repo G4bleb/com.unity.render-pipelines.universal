@@ -19,17 +19,17 @@ namespace UnityEngine.Experimental.Rendering.Universal
         [SerializeField] bool m_CastsShadows = true;
         [SerializeField] bool m_SelfShadows = false;
         [SerializeField] int[] m_ApplyToSortingLayers = null;
-        public Vector3[] m_ShapePath = null;
+        [SerializeField] Vector3[] m_ShapePath = null;
         [SerializeField] int m_ShapePathHash = 0;
-        public Mesh m_Mesh;
+        [SerializeField] Mesh m_Mesh;
         [SerializeField] int m_InstanceId;
 
 
         internal ShadowCasterGroup2D m_ShadowCasterGroup = null;
         internal ShadowCasterGroup2D m_PreviousShadowCasterGroup = null;
 
-        internal Mesh mesh => m_Mesh;
-        internal Vector3[] shapePath => m_ShapePath;
+        internal Mesh mesh { get { return m_Mesh; } set { m_Mesh = value; } }
+        internal Vector3[] shapePath { get { return m_ShapePath; } set { m_ShapePath = value; } }
         internal int shapePathHash { get { return m_ShapePathHash; } set { m_ShapePathHash = value; } }
 
         int m_PreviousShadowGroup = 0;

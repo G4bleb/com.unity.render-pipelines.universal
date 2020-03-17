@@ -10,20 +10,13 @@ namespace UnityEngine.Experimental.Rendering.Universal {
     [DisallowMultipleComponent]
     [AddComponentMenu("Rendering/2D/Tilemap Shadow Caster 2D (Experimental)")]
     public class TilemapShadowCaster2D : ShadowCasterGroup2D {
+
         public void ClearShadowCasters() {
-            foreach (Transform child in transform) {//TODO make a button do this
-                GameObject.DestroyImmediate(child.gameObject);
+            while (transform.childCount != 0) {
+                DestroyImmediate(transform.GetChild(0).gameObject);
             }
 
             if (GetShadowCasters() != null) {
-                // foreach (ShadowCaster2D sc in GetShadowCasters()) {
-                //     try {
-                //         DestroyImmediate(sc.gameObject);
-                //     } catch (Exception e) when (e is MissingReferenceException || e is NullReferenceException) {
-                //         //TODO warn user
-                //     }
-                // }
-
                 GetShadowCasters().Clear();
             }
         }
@@ -43,12 +36,16 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     scHost.transform.parent = transform;
 
                     ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
-                    sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
+                    sc.shapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
 
                     sc.useRendererSilhouette = false;
                     sc.selfShadows = true;
 
                     RegisterShadowCaster2D(sc);
+
+                    sc.enabled = false;
+                    sc.mesh = null;
+                    sc.enabled = true;
                 }
             } else {
                 Debug.Log("Composite collider had no path");
@@ -77,7 +74,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     sprite.GetPhysicsShape(0, shapeVertices);
 
                     ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
-                    sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(shapeVertices.ToArray(), vec2To3);
+                    sc.shapePath = Array.ConvertAll<Vector2, Vector3>(shapeVertices.ToArray(), vec2To3);
 
                     RegisterShadowCaster2D(sc);
                     sc.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(position.x, position.y, 0));
@@ -85,7 +82,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     sc.selfShadows = true;
 
                     sc.enabled = false;
-                    sc.m_Mesh = null;
+                    sc.mesh = null;
                     sc.enabled = true;
                 }
             }

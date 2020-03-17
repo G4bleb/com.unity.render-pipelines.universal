@@ -3,28 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TilemapShadowCaster2D))]
-public class TilemapShadowCasterEditor : Editor
-{
-    public override void OnInspectorGUI() {
-        DrawDefaultInspector();
+namespace UnityEngine.Experimental.Rendering.Universal {
+    [CustomEditor(typeof(TilemapShadowCaster2D))]
+    public class TilemapShadowCasterEditor : Editor {
+        public override void OnInspectorGUI() {
+            // DrawDefaultInspector();
 
-        TilemapShadowCaster2D tilemapShadowCaster = (TilemapShadowCaster2D)target;
+            TilemapShadowCaster2D tilemapShadowCaster = (TilemapShadowCaster2D)target;
 
-        if (GUILayout.Button("Bake Shadow Casters from CompositeCollider2D")) {
-            tilemapShadowCaster.ClearShadowCasters();
-            tilemapShadowCaster.FromCompositeCollider2D();
-        }
+            if (GUILayout.Button("Gen from CompositeCollider2D")) {
+                tilemapShadowCaster.ClearShadowCasters();
+                tilemapShadowCaster.FromCompositeCollider2D();
+            }
 
-        if(GUILayout.Button("Generate Shadow Casters from Grid Tiles Sprites")){
-            tilemapShadowCaster.ClearShadowCasters();
-            tilemapShadowCaster.FromGridTilesSprites();
-        }
+            if (GUILayout.Button("Gen from Grid Tiles Sprites")) {
+                tilemapShadowCaster.ClearShadowCasters();
+                tilemapShadowCaster.FromGridTilesSprites();
+            }
 
-        GUILayout.Space(20);
+            GUILayout.Space(20);
 
-        if(GUILayout.Button("Clear Shadow Casters")){
-            tilemapShadowCaster.ClearShadowCasters();
+            if (GUILayout.Button("Clear Children")) {
+                tilemapShadowCaster.ClearShadowCasters();
+            }
         }
     }
 }
