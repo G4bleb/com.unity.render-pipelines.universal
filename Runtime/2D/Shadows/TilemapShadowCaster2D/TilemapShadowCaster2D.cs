@@ -10,8 +10,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
     [DisallowMultipleComponent]
     [AddComponentMenu("Rendering/2D/Tilemap Shadow Caster 2D (Experimental)")]
     public class TilemapShadowCaster2D : ShadowCasterGroup2D {
-        void Reset() {//TODO make a button do this
-
+        public void ClearShadowCasters() {
             foreach (Transform child in transform) {//TODO make a button do this
                 GameObject.DestroyImmediate(child.gameObject);
             }
@@ -24,40 +23,43 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                 //         //TODO warn user
                 //     }
                 // }
-                
+
                 GetShadowCasters().Clear();
             }
+        }
 
-            // Tilemaps.TilemapCollider2D collider = GetComponent<Tilemaps.TilemapCollider2D>();
-            // collider.usedByComposite = true;
-            // CompositeCollider2D compositeCollider = gameObject.AddComponent<CompositeCollider2D>();
+        public void FromCompositeCollider2D() {
+            Tilemaps.TilemapCollider2D tileMapcollider = GetComponent<Tilemaps.TilemapCollider2D>();
+            tileMapcollider.usedByComposite = true;
+            CompositeCollider2D compositeCollider = gameObject.AddComponent<CompositeCollider2D>();
 
-            // try {
-            //     if (compositeCollider.pathCount != 0) {
-            //         for (int pathIndex = 0; pathIndex < compositeCollider.pathCount; pathIndex++) {
-            //             Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
-            //             compositeCollider.GetPath(pathIndex, pathVertices);
-            //             GameObject scHost = new GameObject();
-            //             scHost.name = "ShadowCaster2D";
-            //             scHost.transform.parent = transform;
-            //             ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
-            //             sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
-            //             sc.useRendererSilhouette = false;
-            //             RegisterShadowCaster2D(sc);
-            //         }
-            //     } else {
-            //         Debug.Log("Composite collider had no path");
-            //     }
+            if (compositeCollider.pathCount != 0) {
+                for (int pathIndex = 0; pathIndex < compositeCollider.pathCount; pathIndex++) {
+                    Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
+                    compositeCollider.GetPath(pathIndex, pathVertices);
 
-            // } catch (System.Exception ex) {
-            //     Debug.Log(ex.ToString());
-            // }
+                    GameObject scHost = new GameObject();
+                    scHost.name = "ShadowCaster2D";
+                    scHost.transform.parent = transform;
 
-            // DestroyImmediate(compositeCollider);
-            // DestroyImmediate(GetComponent<Rigidbody2D>());
-            // collider.usedByComposite = false;
+                    ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
+                    sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
 
+                    sc.useRendererSilhouette = false;
+                    sc.selfShadows = true;
 
+                    RegisterShadowCaster2D(sc);
+                }
+            } else {
+                Debug.Log("Composite collider had no path");
+            }
+
+            DestroyImmediate(compositeCollider);
+            DestroyImmediate(GetComponent<Rigidbody2D>());
+            tileMapcollider.usedByComposite = false;
+        }
+
+        public void FromGridTilesSprites() {
             Tilemaps.Tilemap tilemap = GetComponent<Tilemaps.Tilemap>();
 
             foreach (var position in tilemap.cellBounds.allPositionsWithin) {
@@ -76,11 +78,12 @@ namespace UnityEngine.Experimental.Rendering.Universal {
 
                     ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
                     sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(shapeVertices.ToArray(), vec2To3);
-                    
+
                     RegisterShadowCaster2D(sc);
                     sc.transform.position = tilemap.GetCellCenterWorld(new Vector3Int(position.x, position.y, 0));
                     sc.useRendererSilhouette = false;
                     sc.selfShadows = true;
+
                     sc.enabled = false;
                     sc.m_Mesh = null;
                     sc.enabled = true;
