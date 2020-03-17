@@ -13,7 +13,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
         void Reset() {
             if (GetShadowCasters() != null) {
                 foreach (ShadowCaster2D sc in GetShadowCasters()) {
-                    Destroy(sc);
+                    Destroy(sc.gameObject);
                 }
                 GetShadowCasters().Clear();
             }
@@ -27,7 +27,9 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     for (int pathIndex = 0; pathIndex < compositeCollider.pathCount; pathIndex++) {
                         Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
                         compositeCollider.GetPath(pathIndex, pathVertices);
-                        ShadowCaster2D sc = gameObject.AddComponent<ShadowCaster2D>();
+                        obj = new GameObject();
+                        obj.transform.parent = gameObject;
+                        ShadowCaster2D sc = obj.AddComponent<ShadowCaster2D>();
                         sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
                         sc.useRendererSilhouette = false;
                     }
