@@ -129,7 +129,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
                             m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
                             m_UseRendererSilhouette = false;
                         }else{
-                            Debug.Log("Composite collider had no path, conversion from TilemapCollider to ShadowCaster failed");
+                            Debug.Log("Composite collider had no path, conversion from TilemapCollider to ShadowCaster failed (Did you check \"Used By Composite\" in the Tilemap Collider ?");
                         }
                         DestroyImmediate(compositeCollider);
                         DestroyImmediate(GetComponent<Rigidbody2D>());
