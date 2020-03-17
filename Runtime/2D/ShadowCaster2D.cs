@@ -106,17 +106,6 @@ namespace UnityEngine.Experimental.Rendering.Universal
                 if (collider != null)
                     bounds = collider.bounds;
             }
-            
-            if(collider.GetType() == typeof(Tilemaps.TilemapCollider2D)){
-                gameObject.AddComponent(typeof(CompositeCollider2D));
-                CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
-                Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
-                compositeCollider.GetPath(0, pathVertices);
-                m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
-                m_UseRendererSilhouette = false;
-                DestroyImmediate(compositeCollider);
-                DestroyImmediate(GetComponent<Rigidbody2D>());
-            }
 
             Vector3 relOffset = bounds.center - transform.position;
 
@@ -129,6 +118,21 @@ namespace UnityEngine.Experimental.Rendering.Universal
                     relOffset + new Vector3(bounds.extents.x, bounds.extents.y),
                     relOffset + new Vector3(-bounds.extents.x, bounds.extents.y)
                 };
+
+                if (collider.GetType() == typeof(Tilemaps.TilemapCollider2D)) {
+                    try {
+                        gameObject.AddComponent(typeof(CompositeCollider2D));
+                        CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
+                        Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
+                        compositeCollider.GetPath(0, pathVertices);
+                        m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
+                        m_UseRendererSilhouette = false;
+                        DestroyImmediate(compositeCollider);
+                        DestroyImmediate(GetComponent<Rigidbody2D>());
+                    } catch (System.Exception ex) {
+                        Debug.WriteLine(ex.ToString());
+                    }
+                }
             }
         }
 
