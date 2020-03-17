@@ -130,7 +130,7 @@ namespace UnityEngine.Experimental.Rendering.Universal
                         DestroyImmediate(compositeCollider);
                         DestroyImmediate(GetComponent<Rigidbody2D>());
                     } catch (System.Exception ex) {
-                        Debug.WriteLine(ex.ToString());
+                        Debug.Log(ex.ToString());
                     }
                 }
             }
