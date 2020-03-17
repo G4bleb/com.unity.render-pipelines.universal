@@ -27,9 +27,9 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     for (int pathIndex = 0; pathIndex < compositeCollider.pathCount; pathIndex++) {
                         Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
                         compositeCollider.GetPath(pathIndex, pathVertices);
-                        obj = new GameObject();
-                        obj.transform.parent = gameObject;
-                        ShadowCaster2D sc = obj.AddComponent<ShadowCaster2D>();
+                        GameObject scHost = new GameObject();
+                        scHost.transform.parent = gameObject;
+                        ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
                         sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
                         sc.useRendererSilhouette = false;
                     }
