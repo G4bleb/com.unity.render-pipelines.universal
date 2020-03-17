@@ -12,8 +12,10 @@ namespace UnityEngine.Experimental.Rendering.Universal {
     public class TilemapShadowCaster2D : ShadowCasterGroup2D {
         void Reset() {
             if (GetShadowCasters() != null) {
+                Console.Log("GetShadowCasters() != null");
                 foreach (ShadowCaster2D sc in GetShadowCasters()) {
                     Destroy(sc.gameObject);
+                    Console.Log("Destroy(sc.gameObject);");
                 }
                 GetShadowCasters().Clear();
             }
@@ -28,6 +30,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                         Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
                         compositeCollider.GetPath(pathIndex, pathVertices);
                         GameObject scHost = new GameObject();
+                        scHost.name = "ShadowCaster2D";
                         scHost.transform.parent = transform;
                         ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
                         sc.m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
