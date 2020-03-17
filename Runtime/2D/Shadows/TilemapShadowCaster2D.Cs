@@ -36,8 +36,8 @@ namespace UnityEngine.Experimental.Rendering.Universal
             //     shadowCaster.name = "shadow_caster_" + i;
             //     i++;
             // }
-            if(m_ShadowCasters != null){
-                m_ShadowCasters.Clear();
+            if(GetShadowCasters() != null){
+                GetShadowCasters().Clear();
             }
 
             Tilemaps.TilemapCollider2D collider = GetComponent<Tilemaps.TilemapCollider2D>();
