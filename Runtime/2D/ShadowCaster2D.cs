@@ -15,13 +15,13 @@ namespace UnityEngine.Experimental.Rendering.Universal
     public class ShadowCaster2D : ShadowCasterGroup2D
     {
         [SerializeField] bool m_HasRenderer = false;
-        public bool m_UseRendererSilhouette = true;
+        [SerializeField] bool m_UseRendererSilhouette = true;
         [SerializeField] bool m_CastsShadows = true;
         [SerializeField] bool m_SelfShadows = false;
         [SerializeField] int[] m_ApplyToSortingLayers = null;
         public Vector3[] m_ShapePath = null;
         [SerializeField] int m_ShapePathHash = 0;
-        [SerializeField] Mesh m_Mesh;
+        public Mesh m_Mesh;
         [SerializeField] int m_InstanceId;
 
 
@@ -113,28 +113,6 @@ namespace UnityEngine.Experimental.Rendering.Universal
                     relOffset + new Vector3(bounds.extents.x, bounds.extents.y),
                     relOffset + new Vector3(-bounds.extents.x, bounds.extents.y)
                 };
-
-                // if (collider.GetType() == typeof(Tilemaps.TilemapCollider2D)) {
-                //     try {
-                //         gameObject.AddComponent(typeof(CompositeCollider2D));
-                //         CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
-                //         if(compositeCollider.pathCount != 0){
-                //             for (int pathIndex = 0; pathIndex < compositeCollider.pathCount; pathIndex++)
-                //             {
-                //                 Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(pathIndex)];
-                //                 compositeCollider.GetPath(pathIndex, pathVertices);
-                //                 m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
-                //             }
-                //             m_UseRendererSilhouette = false;
-                //         }else{
-                //             Debug.Log("Composite collider had no path, conversion from TilemapCollider to ShadowCaster failed (Did you check \"Used By Composite\" in the Tilemap Collider ?");
-                //         }
-                //         DestroyImmediate(compositeCollider);
-                //         DestroyImmediate(GetComponent<Rigidbody2D>());
-                //     } catch (System.Exception ex) {
-                //         Debug.Log(ex.ToString());
-                //     }
-                // }
             }
         }
 
