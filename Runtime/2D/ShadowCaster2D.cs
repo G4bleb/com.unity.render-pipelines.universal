@@ -123,10 +123,14 @@ namespace UnityEngine.Experimental.Rendering.Universal
                     try {
                         gameObject.AddComponent(typeof(CompositeCollider2D));
                         CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
-                        Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
-                        compositeCollider.GetPath(0, pathVertices);
-                        m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
-                        m_UseRendererSilhouette = false;
+                        if(compositeCollider.pathCount != 0){
+                            Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
+                            compositeCollider.GetPath(0, pathVertices);
+                            m_ShapePath = Array.ConvertAll<Vector2, Vector3>(pathVertices, vec2To3);
+                            m_UseRendererSilhouette = false;
+                        }else{
+                            Debug.Log("Composite collider had no path, conversion from TilemapCollider to ShadowCaster failed");
+                        }
                         DestroyImmediate(compositeCollider);
                         DestroyImmediate(GetComponent<Rigidbody2D>());
                     } catch (System.Exception ex) {
