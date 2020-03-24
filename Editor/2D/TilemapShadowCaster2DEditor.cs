@@ -5,7 +5,7 @@ using UnityEditor;
 
 namespace UnityEngine.Experimental.Rendering.Universal {
     [CustomEditor(typeof(TilemapShadowCaster2D))]
-    public class TilemapShadowCasterEditor : Editor {
+    public class TilemapShadowCaster2DEditor : Editor {
         public override void OnInspectorGUI() {
             // DrawDefaultInspector();
 
