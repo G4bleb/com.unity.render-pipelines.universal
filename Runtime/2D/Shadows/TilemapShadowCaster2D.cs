@@ -53,7 +53,6 @@ namespace UnityEngine.Experimental.Rendering.Universal {
 
             DestroyImmediate(compositeCollider);
             DestroyImmediate(GetComponent<Rigidbody2D>());
-            tileMapcollider.usedByComposite = false;
         }
 
         public void FromGridTilesSprites() {
