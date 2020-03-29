@@ -65,14 +65,13 @@ namespace UnityEngine.Experimental.Rendering.Universal {
                     continue;
 
                 int PhysicsShape = sprite.GetPhysicsShapeCount();
-                if (PhysicsShape >= 0) {
+                if (PhysicsShape > 0) {
                     GameObject scHost = new GameObject();
                     scHost.name = "ShadowCaster2D";//TODO give them a better name
                     scHost.transform.parent = transform;
 
                     List<Vector2> shapeVertices = new List<Vector2>(PhysicsShape);
                     sprite.GetPhysicsShape(0, shapeVertices);
-
                     ShadowCaster2D sc = scHost.AddComponent<ShadowCaster2D>();
                     sc.shapePath = Array.ConvertAll<Vector2, Vector3>(shapeVertices.ToArray(), vec2To3);
 
