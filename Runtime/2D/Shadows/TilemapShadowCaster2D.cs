@@ -23,6 +23,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
 
         public void FromCompositeCollider2D() {
             Tilemaps.TilemapCollider2D tileMapcollider = GetComponent<Tilemaps.TilemapCollider2D>();
+            bool tilemapCompositeUsage = tileMapcollider.usedByComposite;
             tileMapcollider.usedByComposite = true;
             CompositeCollider2D compositeCollider = gameObject.AddComponent<CompositeCollider2D>();
 
@@ -53,6 +54,7 @@ namespace UnityEngine.Experimental.Rendering.Universal {
 
             DestroyImmediate(compositeCollider);
             DestroyImmediate(GetComponent<Rigidbody2D>());
+            tileMapcollider.usedByComposite = tilemapCompositeUsage;
         }
 
         public void FromGridTilesSprites() {
