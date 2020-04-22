@@ -114,8 +114,8 @@ namespace UnityEngine.Experimental.Rendering.Universal
             if(polygonCollider != null && polygonCollider.pathCount >= 0){
                 m_ShapePath = Array.ConvertAll<Vector2, Vector3>(polygonCollider.GetPath(0), vec2To3);
             }
-            
-            CompositeCollider2D compositeCollider = GetComponent<PolygonCollider2D>();
+
+            CompositeCollider2D compositeCollider = GetComponent<CompositeCollider2D>();
             if (compositeCollider != null && compositeCollider.pathCount >= 0) {
                 Vector2[] pathVertices = new Vector2[compositeCollider.GetPathPointCount(0)];
                 compositeCollider.GetPath(0, pathVertices);
