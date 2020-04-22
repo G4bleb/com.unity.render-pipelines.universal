@@ -112,8 +112,12 @@ namespace UnityEngine.Experimental.Rendering.Universal
 
             PolygonCollider2D polygonCollider = GetComponent<PolygonCollider2D>();
             if(polygonCollider != null && polygonCollider.pathCount >= 0){
-                m_ShapePath = polygonCollider.GetPath(0);
+                m_ShapePath = Array.ConvertAll<Vector2, Vector3>(polygonCollider.GetPath(0), vec2To3); ;
             }
+        }
+
+        private Vector3 vec2To3(Vector2 inputVector) {
+            return new Vector3(inputVector.x, inputVector.y, 0);
         }
 
         protected void OnEnable()
