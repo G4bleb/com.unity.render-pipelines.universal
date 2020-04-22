@@ -92,15 +92,10 @@ namespace UnityEngine.Experimental.Rendering.Universal
             Renderer renderer = GetComponent<Renderer>();
             Collider2D collider = GetComponent<Collider2D>();
 
-            if (renderer != null)
-            {
+            if (collider != null)
+                bounds = collider.bounds;
+            else if (renderer != null)
                 bounds = renderer.bounds;
-            }
-            else
-            {
-                if (collider != null)
-                    bounds = collider.bounds;
-            }
 
             Vector3 relOffset = bounds.center - transform.position;
 
