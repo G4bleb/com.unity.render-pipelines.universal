@@ -92,10 +92,10 @@ namespace UnityEngine.Experimental.Rendering.Universal
             Renderer renderer = GetComponent<Renderer>();
             Collider2D collider = GetComponent<Collider2D>();
 
-            if (collider != null)
-                bounds = collider.bounds;
-            else if (renderer != null)
+            if (renderer != null)
                 bounds = renderer.bounds;
+            else if (collider != null)
+                bounds = collider.bounds;
 
             Vector3 relOffset = bounds.center - transform.position;
 
@@ -108,6 +108,11 @@ namespace UnityEngine.Experimental.Rendering.Universal
                     relOffset + new Vector3(bounds.extents.x, bounds.extents.y),
                     relOffset + new Vector3(-bounds.extents.x, bounds.extents.y)
                 };
+            }
+
+            PolygonCollider2D polygonCollider = GetComponent<PolygonCollider2D>();
+            if(polygonCollider != null && polygonCollider.pathCount >= 0){
+                m_ShapePath = polygonCollider.GetPath(0);
             }
         }
 
